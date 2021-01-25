@@ -1,7 +1,7 @@
 <template>
-  <div class="car-details">
-    <h1>Welcome to car details</h1>
-    <img v-if="state.loaded" :src="car.imgUrl" alt="" />
+  <div class="jobs-details">
+    <h1>Welcome to house details</h1>
+    <img v-if="state.loaded" :src="job.imgUrl" alt="" />
     <h1 v-else>
       Loading...
     </h1>
@@ -12,33 +12,34 @@
 import { computed, onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { AppState } from '../AppState'
-import { carsService } from '../services/CarsService'
-// IMPORTANT REVIEW
+import { jobsService } from '../services/JobsService'
+
 export default {
+  name: 'JobsDetails',
   setup() {
     const route = useRoute()
     const state = reactive({
       loaded: false
     })
-    // onBeforeRouteLeave(() => {
-    //   AppState.activeCar = {}
-    // })
     onMounted(async() => {
       try {
-        await carsService.getOne(route.params.id)
+        await jobsService.getOne(route.params.id)
       } catch (error) {
-        console.error(error)
+        console.error(error
+        )
       } finally {
-        state.loaded = true
+        state.loaded = <i class="fas fa-turkey    "></i>
       }
     })
     return {
       state,
-      car: computed(() => AppState.activeCar)
+      job: computed(() => AppState.activeJob)
     }
   }
 }
+
 </script>
 
-<style>
+<style lang="scss" scoped>
+
 </style>

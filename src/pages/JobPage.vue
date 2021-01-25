@@ -1,63 +1,63 @@
 <template>
-  <div class="cars-page container-fluid">
+  <div class="jobs-page container-fluid">
     <div class="row">
       <div class="col text-center">
-        <h1><img alt="Vue logo" src="../assets/logo.png" class="logo" />ars</h1>
+        <h1>House<img alt="Vue logo" src="../assets/logo.png" class="logo mb-4" />s</h1>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <form @submit.prevent="createCar">
+        <form @submit.prevent="createJob">
           <div class="row">
             <div class="col">
-              <label for="make"></label>
-              <input
-                type="text"
-                name="make"
-                id="make"
-                v-model="state.newCar.make"
-                class="form-control"
-                placeholder="Make..."
-                aria-describedby="helpId"
-              />
-            </div>
-            <div class="col">
-              <label for="model"></label>
-              <input
-                type="text"
-                name="model"
-                id="model"
-                v-model="state.newCar.model"
-                class="form-control"
-                placeholder="model..."
-                aria-describedby="helpId"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <label for="year"></label>
+              <label for="jobTitle"></label>
               <input
                 type="number"
-                name="year"
-                id="year"
-                v-model="state.newCar.year"
+                name="jobTitle"
+                id="jobTitle"
+                v-model="state.newJob.jobTitle"
                 class="form-control"
-                placeholder="year..."
+                placeholder="jobTitle..."
                 aria-describedby="helpId"
               />
             </div>
             <div class="col">
-              <label for="price"></label>
+              <label for="company"></label>
               <input
                 type="number"
-                name="price"
-                id="price"
-                v-model="state.newCar.price"
+                name="company"
+                id="company"
+                v-model="state.newHouse.company"
                 class="form-control"
-                placeholder="price..."
+                placeholder="company..."
                 aria-describedby="helpId"
               />
+              <div class="col">
+                <label for="hours"></label>
+                <input
+                  type="number"
+                  name="hours"
+                  id="hours"
+                  v-model="state.newHouse.hours"
+                  class="form-control"
+                  placeholder="hours..."
+                  aria-describedby="helpId"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label for="rate"></label>
+                <input
+                  type="number"
+                  name="rate"
+                  id="rate"
+                  v-model="state.newHouse.rate"
+                  class="form-control"
+                  placeholder="rate..."
+                  aria-describedby="helpId"
+                />
+              </div>
             </div>
           </div>
           <div class="row">
@@ -67,7 +67,7 @@
                 type="text"
                 name="description"
                 id="description"
-                v-model="state.newCar.description"
+                v-model="state.newHouse.description"
                 class="form-control"
                 placeholder="description..."
                 aria-describedby="helpId"
@@ -79,7 +79,7 @@
                 type="text"
                 name="imgUrl"
                 id="imgUrl"
-                v-model="state.newCar.imgUrl"
+                v-model="state.newHouse.imgUrl"
                 class="form-control"
                 placeholder="imgUrl..."
                 aria-describedby="helpId"
@@ -87,36 +87,38 @@
             </div>
           </div>
           <button type="submit" class="btn btn-success my-1">
-            Add Car
+            Add House
           </button>
         </form>
       </div>
+      </form>
     </div>
-    <div class="row">
-      <Car v-for="car in cars" :key="car.id" :car="car" />
-    </div>
+  </div>
+  <div class="row">
+    <House v-for="house in houses" :key="house.id" :house="house" />
+  </div>
   </div>
 </template>
 
 <script>
 import { computed, onMounted, reactive } from 'vue'
-import { carsService } from '../services/CarsService'
+import { housesService } from '../services/HousesService'
 import { AppState } from '../AppState'
-import Car from '../components/Car.vue'
+import House from '../components/House.vue'
 import { useRouter } from 'vue-router'
 
 export default {
-  name: 'CarsPage',
+  name: 'HousesPage',
   setup() {
     const router = useRouter()
     const state = reactive({
-      newCar: {}
+      newHouse: {}
     })
 
     // NOTE on mounted gets called when the page is first mounted to the dom (similar to constructors)
     onMounted(() => {
       try {
-        carsService.getCars()
+        housesService.getHouses()
       } catch (error) {
         console.error(error)
       }
@@ -124,14 +126,14 @@ export default {
     return {
       state,
       // if data changes dynimcally in the appstate use a computed
-      cars: computed(() => AppState.cars),
+      houses: computed(() => AppState.houses),
 
-      async createCar() {
+      async createHouse() {
         try {
-          const id = await carsService.create(state.newCar)
-          state.newCar = {}
+          const id = await housesService.create(state.newHouse)
+          state.newHouse = {}
           // change route in javascript using router.push()
-          router.push({ name: 'CarDetails', params: { id } })
+          router.push({ name: 'HouseDetails', params: { id } })
         } catch (error) {
           console.error(error)
         }
@@ -140,14 +142,13 @@ export default {
     }
   },
   components: {
-    Car
+    House
   }
 }
 </script>
 
 <style lang="scss" scoped>
   .logo {
-   transform: rotateZ(90deg);
-   height: 1em
+   height: .25em
   }
 </style>
